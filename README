@@ -1,6 +1,10 @@
 API for Legacy Attributes - APILA
 =================================
 
+To deploy with Passenger, add to virtual host's config
+ * RackBaseUri /apila
+ * RackEnv development
+
 
 Thanks to zapnap@github for a handy Sinatra Application Template!
 https://github.com/zapnap/sinatra-template
