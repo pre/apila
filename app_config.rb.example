@@ -1,0 +1,8 @@
+require 'ostruct'
+
+AppConfig = OpenStruct.new(
+               :title => 'Apila',
+               :author => 'Petrus Repo',
+               :url_base => 'http://lv.local/apila/',
+               :database_url => "oracle://USERNAME:PASSWORD@localhost/xe"
+             )
