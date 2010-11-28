@@ -1,4 +1,5 @@
 ._*
 tmp/*
 log/*
+app_config.rb
 

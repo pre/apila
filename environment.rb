@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'dm-core'
 require 'app_config'
+require 'dm-migrations'
+require 'builder'
 
 require 'sinatra' unless defined?(Sinatra)
 
@@ -12,9 +14,4 @@ configure do
 
   DataMapper.setup(:default, AppConfig.database_url)
 
-  # Test environment's config
-  configure :test do
-    DataMapper.setup(:default, "sqlite::memory:")
-  end
-  
 end
