@@ -21,10 +21,23 @@ get '/' do
 end
 
 get '/ringers/:id.xml' do
-  @ringer = Ringer.first(:id => params["id"])
-  if @ringer
-    builder :ringer
-  else 
-    halt 404
-  end
+  build_xml_response(Ringer, params[:id])
 end
+
+get '/municipalities/:id.xml' do
+  build_xml_response(Municipality, params[:id])
+end
+
+
+private
+
+  def build_xml_response(object_class, id)
+    instance_name = object_class.to_s.downcase
+    instance_variable_set("@#{instance_name}", object_class.first(:id => id))
+
+    if instance_variable_get("@#{instance_name}")
+      builder instance_name.to_sym
+    else
+      halt 404
+    end
+  end
