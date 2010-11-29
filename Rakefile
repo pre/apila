@@ -25,6 +25,18 @@ namespace :db do
   end
 end
 
+namespace :gems do
+  desc 'Install Gems with Bundler'
+  task :install do
+    system "bundle install"
+  end
+
+  desc 'Update Gems with Bundler'
+  task :update do
+    system "bundle update"
+  end
+end
+
 task :environment do
   require 'environment'
 end

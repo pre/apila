@@ -5,6 +5,12 @@ To deploy with Passenger, add to virtual host's config
  * RackBaseUri /apila
  * RackEnv development
 
+And add a symlink
+ ln -s APILA_ROOT/public LINTUVAARA_ROOT/public/apila
+
+Install Gem dependencies with
+ rake gems:install
+
 
 Thanks to zapnap@github for a handy Sinatra Application Template!
 https://github.com/zapnap/sinatra-template
