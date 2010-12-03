@@ -8,8 +8,13 @@ To deploy with Passenger, add to virtual host's config
 And add a symlink
  ln -s APILA_ROOT/public LINTUVAARA_ROOT/public/apila
 
+Configure app_config.rb (look at app_config.rb.example).
+
 Install Gem dependencies with
  rake gems:install
+
+You may run the project also standalone by
+ ruby application.rb
 
 
 Thanks to zapnap@github for a handy Sinatra Application Template!
