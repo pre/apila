@@ -15,6 +15,10 @@ end
 helpers do
 end
 
+not_found do
+  "404 Not Found"
+end
+
 get '/' do
   #haml :root
   "Toimii!"
