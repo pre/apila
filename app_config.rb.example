@@ -6,3 +6,8 @@ AppConfig = OpenStruct.new(
                :url_base => 'http://lv.local/apila/',
                :database_url => "oracle://USERNAME:PASSWORD@localhost/xe"
              )
+
+AppConfig.log = OpenStruct.new(
+                 :directory => "log",
+                 :filename  => "sinatra.log"
+                )
