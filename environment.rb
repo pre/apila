@@ -12,6 +12,9 @@ configure do
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/lib")
   Dir.glob("#{File.dirname(__FILE__)}/lib/*.rb") { |lib| require File.basename(lib, '.*') }
 
-  DataMapper.setup(:default, AppConfig.database_url)
+  if Sinatra::Application.environment == :development
+    DataMapper::Logger.new(File.join(AppConfig.log.directory, AppConfig.log.filename), :debug)
+  end
 
+  DataMapper.setup(:default, AppConfig.database_url)
 end
