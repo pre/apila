@@ -5,6 +5,7 @@ gem "data_mapper"
 gem "dm-oracle-adapter"
 gem "dm-migrations"
 gem "builder"
+gem "json"
 
 group :test do
   gem "rspec"

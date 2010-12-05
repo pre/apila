@@ -17,6 +17,12 @@ Factory.define :municipality do |f|
   f.longitude 21.6666698
   f.latitude 61.6666718
   f.radius 20
+  f.association :environment_centre
 
+  f.sequence(:id) { |n| "#{n}" }
+end
+
+Factory.define :environment_centre do |f|
+  f.sequence(:name) { |n| "Yleismaailmallinen ympäristökeskus nro #{n}" }
   f.sequence(:id) { |n| "#{n}" }
 end

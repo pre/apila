@@ -3,6 +3,7 @@ require 'dm-core'
 require 'app_config'
 require 'dm-migrations'
 require 'builder'
+require 'json'
 
 require 'sinatra' unless defined?(Sinatra)
 

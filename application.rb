@@ -20,24 +20,29 @@ not_found do
 end
 
 get '/' do
-  #haml :root
-  "Toimii!"
+  "It works! Please request something."
 end
 
 get '/ringers/:id.xml' do
-  build_xml_response(Ringer, params[:id])
+  build_xml_response(Ringer, :id => params[:id])
 end
 
 get '/municipalities/:id.xml' do
-  build_xml_response(Municipality, params[:id])
+  build_xml_response(Municipality, :id => params[:id])
+end
+
+get '/municipalities.json' do
+  content_type :json
+  @municipalities = Municipality.all(:code.like => "#{params[:code].to_s.upcase}%")
+  @municipalities.map { |m| m.attributes }.to_json
 end
 
 
 private
 
-  def build_xml_response(object_class, id)
+  def build_xml_response(object_class, query = {})
     instance_name = object_class.to_s.downcase
-    instance_variable_set("@#{instance_name}", object_class.first(:id => id))
+    instance_variable_set("@#{instance_name}", object_class.first(query))
 
     if instance_variable_get("@#{instance_name}")
       builder instance_name.to_sym
