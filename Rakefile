@@ -35,6 +35,17 @@ namespace :gems do
   task :update do
     system "bundle update"
   end
+
+  desc 'Inspect the bundle to see whether applications requirements are met'
+  task :check do
+    system "bundle check"
+  end
+
+  desc 'List all Gems in the bundle'
+  task :list do
+    system "bundle list"
+  end
+
 end
 
 task :environment do
