@@ -40,6 +40,7 @@ end
 get '/species.json' do
   content_type :json
   @species = Species.filter_by_code(params[:code])
+  @species = @species.filter_by_lang(params[:lang]) if params[:lang]
   @species.to_json(:relationships => {:names => {}})
 end
 
