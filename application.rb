@@ -37,6 +37,12 @@ get '/municipalities.json' do
   @municipalities.map { |m| m.attributes }.to_json
 end
 
+get '/species.json' do
+  content_type :json
+  @species = Species.filter_by_code(params[:code])
+  @species.map { |m| m.attributes }.to_json
+end
+
 private
 
   def build_xml_response(object_class, query = {})

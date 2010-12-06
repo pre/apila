@@ -70,8 +70,35 @@ describe 'Application' do
         end
       end
 
+      specify 'should return empty array when nothing is found' do
+        Municipality.stub!(:filter_by_code).and_return(Array.new)
+        get "/municipalities.json?code=UNMATCHED"
+        last_response.should be_ok
+        last_response.status.should == 200
+      end
+
     end
 
+    describe 'for species' do
+      specify 'should return a json array of all species' do
+        species = []
+        1.times { species << Factory.build(:species) }
+        Species.stub!(:filter_by_code).and_return(species)
+
+        get "/species.json"
+        last_response.should be_ok
+        species.each do |s|
+          last_response.body.should include(json_output("id", "\"#{s.id}\""))
+        end
+      end
+
+      specify 'should return empty array when nothing is found' do
+        Species.stub!(:filter_by_code).and_return(Array.new)
+        get "/species.json?code=UNMATCHED"
+        last_response.should be_ok
+        last_response.status.should == 200
+      end
+    end
   end
 
 end

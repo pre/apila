@@ -7,7 +7,7 @@ end
 Factory.define :ringer do |f|
   f.first_name "Jouni"
   f.last_name "Kemppainen"
-  f.sequence(:email) { |n| "jouni#{n}@example#{n}.com" }
+  f.email Factory.next(:email)
   f.sequence(:id) { |n| "#{n}" }
 end
 
@@ -25,4 +25,18 @@ end
 Factory.define :environment_centre do |f|
   f.sequence(:name) { |n| "Yleismaailmallinen ympäristökeskus nro #{n}" }
   f.sequence(:id) { |n| "#{n}" }
+end
+
+Factory.define :species do |f|
+  f.sequence(:id) { |n| "#{n}"}
+  f.sequence(:code) { |n| "GAVS#{n}"}
+
+  f.names { |names| [names.association(:lexicon)] }
+end
+
+Factory.define :lexicon do |f|
+  f.sequence(:content) { |n| "Harmaahaikara #{n}" }
+  f.sequence(:code) { |n| n }
+  f.category 8
+  f.language "S"
 end
