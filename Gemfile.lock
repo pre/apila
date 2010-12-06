@@ -89,6 +89,7 @@ DEPENDENCIES
   data_mapper
   dm-migrations
   dm-oracle-adapter
+  dm-serializer
   dm-sqlite-adapter
   factory_girl
   json

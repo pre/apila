@@ -2,6 +2,7 @@ require 'rubygems'
 require 'dm-core'
 require 'app_config'
 require 'dm-migrations'
+require 'dm-serializer'
 require 'builder'
 require 'json'
 

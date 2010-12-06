@@ -34,13 +34,13 @@ end
 get '/municipalities.json' do
   content_type :json
   @municipalities = Municipality.filter_by_code(params[:code])
-  @municipalities.map { |m| m.attributes }.to_json
+  @municipalities.to_json
 end
 
 get '/species.json' do
   content_type :json
   @species = Species.filter_by_code(params[:code])
-  @species.map { |m| m.attributes }.to_json
+  @species.to_json
 end
 
 private
