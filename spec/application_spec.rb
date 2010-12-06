@@ -87,7 +87,6 @@ describe 'Application' do
 
         get "/municipalities.json?code=UNMATCHED"
         last_response.should be_ok
-        last_response.status.should == 200
       end
 
     end
@@ -103,6 +102,17 @@ describe 'Application' do
         species.each do |s|
           last_response.body.should include(json_output("id", "\"#{s.id}\""))
         end
+      end
+
+      specify 'should include species name in the response' do
+        finnish = Factory.build(:lexicon, :content => "Haikara")
+        english = Factory.build(:lexicon, :content => "Stork", :language => "E")
+        species = Factory.build(:species, :names => [finnish, english])
+        Species.stub!(:filter_by_code).and_return(species)
+
+        get "/species.json"
+        last_response.should be_ok
+        last_response.body.should include("Haikara", "Stork")
       end
 
       specify 'should return empty array when nothing is found' do

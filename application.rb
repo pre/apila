@@ -40,7 +40,7 @@ end
 get '/species.json' do
   content_type :json
   @species = Species.filter_by_code(params[:code])
-  @species.to_json
+  @species.to_json(:relationships => {:names => {}})
 end
 
 private
