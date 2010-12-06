@@ -21,6 +21,7 @@ describe 'Application' do
       ringer_id = 10001
       ringer = Factory.build(:ringer, :id => ringer_id)
       Ringer.should_receive(:first).with(:id => "#{ringer_id}").and_return(ringer)
+
       get "/ringers/#{ringer_id}.xml"
       last_response.status.should == 200
     end
@@ -28,6 +29,7 @@ describe 'Application' do
     specify 'should return error code 404 when object is not found' do
       ringer_id = 9999999
       Ringer.should_receive(:first).with(:id => "#{ringer_id}").and_return(nil)
+
       get "/ringers/#{ringer_id}.xml"
       last_response.status.should == 404
     end
@@ -39,8 +41,8 @@ describe 'Application' do
       ringer_id = 10000
       ringer = Factory.build(:ringer, :id => ringer_id)
       Ringer.stub!(:first).and_return(ringer)
-      get "/ringers/#{ringer_id}.xml"
 
+      get "/ringers/#{ringer_id}.xml"
       last_response.should be_ok
       last_response.body.should include("<ringer id=\"#{ringer_id}\">")
     end
@@ -50,8 +52,8 @@ describe 'Application' do
         municipality_id = 1
         municipality = Factory.build(:municipality, :id => municipality_id)
         Municipality.stub!(:first).and_return(municipality)
-        get "/municipalities/#{municipality_id}.xml"
 
+        get "/municipalities/#{municipality_id}.xml"
         last_response.should be_ok
         last_response.body.should include("<municipality id=\"#{municipality_id}\">")
         last_response.body.should include("<environment_centre id=\"#{municipality.environment_centre.id}\">")
@@ -73,6 +75,7 @@ describe 'Application' do
 
       specify 'should return empty array when nothing is found' do
         Municipality.stub!(:filter_by_code).and_return(Array.new)
+
         get "/municipalities.json?code=UNMATCHED"
         last_response.should be_ok
         last_response.status.should == 200
@@ -95,6 +98,7 @@ describe 'Application' do
 
       specify 'should return empty array when nothing is found' do
         Species.stub!(:filter_by_code).and_return(Array.new)
+
         get "/species.json?code=UNMATCHED"
         last_response.should be_ok
         last_response.status.should == 200
