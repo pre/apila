@@ -34,7 +34,7 @@ end
 get '/municipalities.json' do
   content_type :json
   @municipalities = Municipality.filter_by_code(params[:code])
-  @municipalities.to_json
+  @municipalities.to_json(:methods => :environment_centre)
 end
 
 get '/species.json' do

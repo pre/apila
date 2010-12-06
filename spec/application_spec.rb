@@ -73,6 +73,15 @@ describe 'Application' do
         end
       end
 
+      specify 'should include environment centre in the response' do
+        env_centre = Factory.build(:environment_centre)
+        municipality = Factory.build(:municipality, :environment_centre => env_centre)
+        Municipality.stub!(:filter_by_code).and_return(municipality)
+
+        get "/municipalities.json?code=MATCH"
+        last_response.body.should include(json_output("name", "\"#{env_centre.name}\""))
+      end
+
       specify 'should return empty array when nothing is found' do
         Municipality.stub!(:filter_by_code).and_return(Array.new)
 
