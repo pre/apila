@@ -33,10 +33,9 @@ end
 
 get '/municipalities.json' do
   content_type :json
-  @municipalities = Municipality.all(:code.like => "#{params[:code].to_s.upcase}%")
+  @municipalities = Municipality.filter_by_code(params[:code])
   @municipalities.map { |m| m.attributes }.to_json
 end
-
 
 private
 

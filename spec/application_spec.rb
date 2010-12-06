@@ -8,7 +8,7 @@ describe 'Application' do
   end
 
   def json_output(attribute, value)
-    "\"#{attribute}\":\"#{value}\""
+    "\"#{attribute}\":#{value}"
   end
 
   specify 'should show the default index page' do
@@ -19,7 +19,7 @@ describe 'Application' do
   describe 'XML builder' do
     specify 'should find object' do
       ringer_id = 10001
-      ringer = Factory.create(:ringer, :id => ringer_id)
+      ringer = Factory.build(:ringer, :id => ringer_id)
       Ringer.should_receive(:first).with(:id => "#{ringer_id}").and_return(ringer)
       get "/ringers/#{ringer_id}.xml"
     end
@@ -36,7 +36,8 @@ describe 'Application' do
   describe 'API XML responses' do
     specify 'should return ringer xml' do
       ringer_id = 10000
-      ringer = Factory.create(:ringer, :id => ringer_id)
+      ringer = Factory.build(:ringer, :id => ringer_id)
+      Ringer.stub!(:first).and_return(ringer)
       get "/ringers/#{ringer_id}.xml"
 
       last_response.should be_ok
@@ -46,7 +47,8 @@ describe 'Application' do
     describe 'for municipalities' do
       specify 'should return municipality xml with environment centre' do
         municipality_id = 1
-        municipality = Factory.create(:municipality, :id => municipality_id)
+        municipality = Factory.build(:municipality, :id => municipality_id)
+        Municipality.stub!(:first).and_return(municipality)
         get "/municipalities/#{municipality_id}.xml"
 
         last_response.should be_ok
@@ -57,46 +59,14 @@ describe 'Application' do
       specify 'should return a json array of all municipalities' do
         municipalities = []
         10.times do
-          municipalities << Factory.create(:municipality)
+          municipalities << Factory.build(:municipality)
         end
+        Municipality.stub!(:all).and_return(municipalities)
 
         get "/municipalities.json"
         last_response.should be_ok
         municipalities.each do |municipality|
-          last_response.body.should include('"id":'+ municipality.id.to_s)
-        end
-      end
-
-      specify 'should return a filtered json array of municipalities' do
-        query = "AABB"
-        should_match = []
-
-        ["#{query}AA", query, "#{query}CC", "#{query}1"].each do |matched_code|
-          should_match << Factory.create(:municipality, :code => matched_code)
-        end
-
-        get "/municipalities.json?code=#{query}"
-        last_response.should be_ok
-        should_match.each do |m|
-          last_response.body.should include(json_output("code", m.code))
-        end
-      end
-
-      specify 'should return only the requested municipalities' do
-        query = "AABB"
-        should_not_match = []
-        should_match = Factory.create(:municipality, :code => "#{query}AWER")
-
-        ["AABC", "A#{query}", "CC", "AA"].each do |unmatched_code|
-          should_not_match << Factory.create(:municipality, :code => unmatched_code)
-        end
-
-        get "/municipalities.json?code=#{query}"
-        last_response.should be_ok
-        last_response.body.should include(json_output("code", should_match.code))
-
-        should_not_match.each do |m|
-          last_response.body.should_not include(json_output("code", m.code))
+          last_response.body.should include(json_output("id", municipality.id))
         end
       end
 

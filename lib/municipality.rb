@@ -12,4 +12,8 @@ class Municipality
   property :environment_centre_id, Integer, :field => 'ku_ympkesk'
 
   belongs_to :environment_centre, :required => false
+
+  def self.filter_by_code(code)
+    all :code.like => "#{code.to_s.upcase}%"
+  end
 end
