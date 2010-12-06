@@ -22,6 +22,7 @@ describe 'Application' do
       ringer = Factory.build(:ringer, :id => ringer_id)
       Ringer.should_receive(:first).with(:id => "#{ringer_id}").and_return(ringer)
       get "/ringers/#{ringer_id}.xml"
+      last_response.status.should == 200
     end
 
     specify 'should return error code 404 when object is not found' do
