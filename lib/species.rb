@@ -11,4 +11,7 @@ class Species
     all :code.like => "#{code.to_s.upcase}%"
   end
 
+  def self.filter_by_lang(lang_code)
+    all Species.names.language => lang_code
+  end
 end
