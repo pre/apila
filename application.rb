@@ -31,10 +31,18 @@ get '/municipalities/:id.xml' do
   build_xml_response(Municipality, :id => params[:id])
 end
 
-get '/municipalities.json' do
-  content_type :json
+get '/municipalities.:format' do
   @municipalities = Municipality.filter_by_code(params[:code])
-  @municipalities.to_json(:methods => :environment_centre)
+
+  case params['format'] when 'json'
+    content_type :json
+    @municipalities.to_json(:methods => :environment_centre)
+  when 'xml'
+    content_type :xml
+    builder :municipalities
+  else
+    not_found
+  end
 end
 
 get '/species.json' do

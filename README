@@ -1,20 +1,36 @@
 API for Legacy Attributes - APILA
 =================================
 
-To deploy with Passenger, add to virtual host's config
- * RackBaseUri /apila
- * RackEnv development
 
-And add a symlink
- ln -s APILA_ROOT/public LINTUVAARA_ROOT/public/apila
+INSTALL INSTRUCTIONS
+--------------------
 
 Configure app_config.rb (look at app_config.rb.example).
 
-Install Gem dependencies with
- rake gems:install
+Setup Oracle's environment variables for ruby-oci8 (see Lintuvaara's README)
+
+Install binary dependencies (at least)
+ % apt-get install libxml2-dev libxslt-dev
+
+Install Rubygems (preferably from source)
+
+Install Gem dependencies
+ % gem install rake bundler
+
+Install Application gems
+ % bundle install
+
 
 You may run the project also standalone by
- ruby application.rb
+ % ruby application.rb
+
+To deploy with Passenger, add to virtual host's config
+  * RackBaseUri /apila
+  * RackEnv development
+
+And add a symlink
+  ln -s APILA_ROOT/public LINTUVAARA_ROOT/public/apila
+
 
 
 Thanks to zapnap@github for a handy Sinatra Application Template!

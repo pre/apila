@@ -1,10 +1,11 @@
 require 'rubygems'
 require 'dm-core'
 require 'app_config'
+require 'json'
 require 'dm-migrations'
 require 'dm-serializer'
 require 'builder'
-require 'json'
+
 
 require 'sinatra' unless defined?(Sinatra)
 

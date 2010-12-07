@@ -61,9 +61,7 @@ describe 'Application' do
 
       specify 'should return a json array of all municipalities' do
         municipalities = []
-        10.times do
-          municipalities << Factory.build(:municipality)
-        end
+        10.times { municipalities << Factory.build(:municipality) }
         Municipality.stub!(:all).and_return(municipalities)
 
         get "/municipalities.json"
@@ -71,6 +69,23 @@ describe 'Application' do
         municipalities.each do |municipality|
           last_response.body.should include(json_output("id", municipality.id))
         end
+      end
+
+      specify 'should return an xml array of all municipalities' do
+        municipalities = []
+        10.times { municipalities << Factory.build(:municipality) }
+        Municipality.stub!(:all).and_return(municipalities)
+
+        get "/municipalities.xml"
+        last_response.should be_ok
+        municipalities.each do |municipality|
+          last_response.body.should include("<municipality id=\"#{municipality.id}\">")
+        end
+      end
+
+      specify 'should return 404 for municipalities with unknown format' do
+        get "/municipalities.xyz"
+        last_response.status.should be(404)
       end
 
       specify 'should include environment centre in the response' do
