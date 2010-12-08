@@ -14,6 +14,13 @@ describe 'Application' do
 
   describe 'API XML responses' do
 
+    specify 'should return 404 when requesting one entry which is not found' do
+      ["/ringers/1.xml", "/municipalities/abc.xml"].each do |uri|
+        get uri
+        last_response.status.should be(404)
+      end
+    end
+
     specify 'should return ringer xml' do
       id = 10000
       ringer = Factory.build(:ringer, :id => id)
@@ -27,24 +34,24 @@ describe 'Application' do
 
     describe 'for municipalities' do
       specify 'should include environment centre in municipality xml' do
-        code = "AITOLA"
-        municipality = Factory.build(:municipality, :code => code)
+        xml_response = "<xml lol='cat'>"
+        municipality = Factory.build(:municipality)
+        municipality.should_receive(:to_xml).with(:methods => [:environment_centre],
+                                                  :only => Municipality.shared_attributes).and_return(xml_response)
         Municipality.stub!(:first).and_return(municipality)
 
-        get "/municipalities/#{code}.xml"
-        last_response.should be_ok
-        last_response.body.should include("<name>#{municipality.name}</name>")
-        last_response.body.should include("<name>#{municipality.environment_centre.name}")
+        get "/municipalities/#{municipality.code}.xml"
+        last_response.body.should == xml_response
       end
 
       specify 'should produce an xml set of all municipalities' do
-        municipalities = mock(DataMapper::Collection)
-        municipalities.should_receive(:to_xml)
-
+        xml_response = "lolcat"
+        municipalities = mock(Object)
+        municipalities.should_receive(:to_xml).and_return(xml_response)
         Municipality.should_receive(:filter_by_code).and_return(municipalities)
 
         get "/municipalities.xml"
-        last_response.should be_ok
+        last_response.body.should == xml_response
       end
 
       specify 'should return code 200 when filtered resultset is empty' do
@@ -59,7 +66,6 @@ describe 'Application' do
       specify 'should produce an xml set of all species' do
         species = mock(DataMapper::Collection)
         species.should_receive(:to_xml)
-
         Species.should_receive(:filter_by_code).and_return(species)
 
         get "/species.xml"

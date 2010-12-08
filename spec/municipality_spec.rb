@@ -1,6 +1,6 @@
 require "#{File.dirname(__FILE__)}/spec_helper"
 
-describe 'Municipality' do
+describe Municipality do
 
   specify 'should return a filtered array of municipalities' do
     code = "AABB"
