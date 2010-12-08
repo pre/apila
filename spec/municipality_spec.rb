@@ -33,4 +33,8 @@ describe 'Municipality' do
     end
   end
 
+  specify 'should query with all when code is empty' do
+    Municipality.should_receive(:all).with(no_args())
+    Municipality.filter_by_code("")
+  end
 end

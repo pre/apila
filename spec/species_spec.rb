@@ -39,4 +39,9 @@ describe 'Species' do
       matched.should_not include(m)
     end
   end
+
+  specify 'should query with all when code is empty' do
+    Species.should_receive(:all).with(no_args())
+    Species.filter_by_code("")
+  end
 end

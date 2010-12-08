@@ -8,7 +8,15 @@ class Species
   has n, :names, 'Lexicon', :parent_key => :id, :child_key => :code, :category => 8
 
   def self.filter_by_code(code)
-    all :code.like => "#{code.to_s.upcase}%"
+    if code.blank?
+      all
+    else
+      all :code.like => "#{code.to_s.upcase}%"
+    end
+  end
+
+  def self.shared_attributes
+    @@shared_attributes ||= [:id, :code]
   end
 
 end

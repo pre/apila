@@ -14,7 +14,11 @@ class Municipality
   belongs_to :environment_centre, :required => false
 
   def self.filter_by_code(code)
-    all :code.like => "#{code.to_s.upcase}%"
+    if code.blank?
+      all
+    else
+      all :code.like => "#{code.to_s.upcase}%"
+    end
   end
 
   def self.shared_attributes
