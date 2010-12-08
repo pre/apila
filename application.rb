@@ -58,8 +58,12 @@ get '/municipalities.xml' do
   end
 end
 
-get '/species.json' do
-  content_type :json
-  @species = Species.filter_by_code(params[:code])
-  @species.to_json(:relationships => {:names => {}})
+get '/species.xml' do
+  species = Species.filter_by_code(params[:code])
+
+  if species
+    species.to_xml(:methods => [:names])
+  else
+    halt 404
+  end
 end

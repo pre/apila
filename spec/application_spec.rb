@@ -64,7 +64,8 @@ describe 'Application' do
       specify 'should return an xml array of all municipalities' do
         municipalities = []
         10.times { |n| municipalities << Factory.create(:municipality, :code => "Municipality no #{n}") }
-        ## FIXME: Sholuld stub, but don't know how to get DataMapper objects who have #to_xml (replace .create with .build)
+        ## FIXME: Sholuld stub, but don't know how to return DataMapper::Collection objects who have #to_xml 
+        ## (in order to replace .create with .build above)
         # Municipality.stub!(:all).and_return(municipalities)
 
         get "/municipalities.xml"
@@ -82,16 +83,14 @@ describe 'Application' do
     end
 
     describe 'for species' do
-      specify 'should return a json array of all species' do
-        species = []
-        1.times { species << Factory.build(:species) }
-        Species.stub!(:filter_by_code).and_return(species)
+      specify 'should return an xml array of all species' do
+        code = "AOIUMQ"
+        species = Factory.create(:species, :code => code)
+        ## FIXME: look at. municipalities; Species.stub!(:filter_by_code).and_return(species)
 
-        get "/species.json"
+        get "/species.xml"
         last_response.should be_ok
-        species.each do |s|
-          last_response.body.should include(json_output("id", "\"#{s.id}\""))
-        end
+        last_response.body.should include("<code>#{code}</code>")
       end
 
       specify 'should include species name in the response' do
@@ -100,17 +99,14 @@ describe 'Application' do
         species = Factory.build(:species, :names => [finnish, english])
         Species.stub!(:filter_by_code).and_return(species)
 
-        get "/species.json"
+        get "/species.xml"
         last_response.should be_ok
         last_response.body.should include("Haikara", "Stork")
       end
 
-      specify 'should return empty array when nothing is found' do
-        Species.stub!(:filter_by_code).and_return(Array.new)
-
-        get "/species.json?code=UNMATCHED"
-        last_response.should be_ok
-        last_response.status.should == 200
+      specify 'should return code 200 when nothing is found' do
+        get "/species.xml?code=DOES_NOT_EXIST"
+        last_response.status.should be(200)
       end
     end
   end
