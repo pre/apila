@@ -51,11 +51,11 @@ describe 'Application' do
 
     describe 'for municipalities' do
       specify 'should return municipality xml with environment centre' do
-        municipality_id = 1
-        municipality = Factory.build(:municipality, :id => municipality_id)
+        code = "AITOLA"
+        municipality = Factory.build(:municipality, :code => code)
         Municipality.stub!(:first).and_return(municipality)
 
-        get "/municipalities/#{municipality_id}.xml"
+        get "/municipalities/#{code}.xml"
         last_response.should be_ok
         last_response.body.should include("<name>#{municipality.name}</name>")
         last_response.body.should include("<name>#{municipality.environment_centre.name}")

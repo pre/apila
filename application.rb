@@ -38,8 +38,8 @@ get '/ringers/:id.xml' do
   end
 end
 
-get '/municipalities/:id.xml' do
-  municipality = Municipality.first(:id => params[:id])
+get '/municipalities/:code.xml' do
+  municipality = Municipality.find_by_code(params[:code])
 
   if municipality
     municipality.to_xml(:methods => [:environment_centre], :only => Municipality.shared_attributes)

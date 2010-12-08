@@ -25,4 +25,8 @@ class Municipality
     @@shared_attributes ||= [:id, :code, :name, :latitude, :longitude, :radius]
   end
 
+  def self.find_by_code(code)
+    first :code => code.to_s.upcase
+  end
+
 end

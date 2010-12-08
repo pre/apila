@@ -37,4 +37,11 @@ describe 'Municipality' do
     Municipality.should_receive(:all).with(no_args())
     Municipality.filter_by_code("")
   end
+
+  specify 'should find by downcase code' do
+    code = "AITOLA"
+    municipality = Factory.create(:municipality, :code => code)
+
+    Municipality.find_by_code(code.downcase).should == municipality
+  end
 end
