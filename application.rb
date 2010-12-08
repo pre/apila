@@ -48,17 +48,13 @@ get '/municipalities/:id.xml' do
   end
 end
 
-get '/municipalities.:format' do
-  @municipalities = Municipality.filter_by_code(params[:code])
+get '/municipalities.xml' do
+  municipalities = Municipality.filter_by_code(params[:code])
 
-  case params['format'] when 'json'
-    content_type :json
-    @municipalities.to_json(:methods => :environment_centre)
-  when 'xml'
-    content_type :xml
-    @municipalities.to_xml(:methods => [:environment_centre], :only => Municipality.shared_attributes)
+  if municipalities
+    municipalities.to_xml(:methods => [:environment_centre], :only => Municipality.shared_attributes)
   else
-    not_found
+    halt 404
   end
 end
 

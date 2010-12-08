@@ -61,18 +61,6 @@ describe 'Application' do
         last_response.body.should include("<name>#{municipality.environment_centre.name}")
       end
 
-      specify 'should return a json array of all municipalities' do
-        municipalities = []
-        10.times { |n| municipalities << Factory.build(:municipality) }
-        Municipality.stub!(:all).and_return(municipalities)
-
-        get "/municipalities.json"
-        last_response.should be_ok
-        municipalities.each do |municipality|
-          last_response.body.should include(json_output("id", municipality.id))
-        end
-      end
-
       specify 'should return an xml array of all municipalities' do
         municipalities = []
         10.times { |n| municipalities << Factory.create(:municipality, :code => "Municipality no #{n}") }
@@ -89,22 +77,6 @@ describe 'Application' do
       specify 'should return 404 for municipalities with unknown format' do
         get "/municipalities.xyz"
         last_response.status.should be(404)
-      end
-
-      specify 'should include environment centre in the response' do
-        env_centre = Factory.build(:environment_centre)
-        municipality = Factory.build(:municipality, :environment_centre => env_centre)
-        Municipality.stub!(:filter_by_code).and_return(municipality)
-
-        get "/municipalities.json?code=MATCH"
-        last_response.body.should include(json_output("name", "\"#{env_centre.name}\""))
-      end
-
-      specify 'should return empty array when nothing is found' do
-        Municipality.stub!(:filter_by_code).and_return(Array.new)
-
-        get "/municipalities.json?code=UNMATCHED"
-        last_response.should be_ok
       end
 
     end
