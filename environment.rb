@@ -2,9 +2,9 @@ require 'rubygems'
 require 'dm-core'
 require 'app_config'
 require 'json'
+require 'nokogiri'
 require 'dm-migrations'
 require 'dm-serializer'
-require 'builder'
 
 
 require 'sinatra' unless defined?(Sinatra)

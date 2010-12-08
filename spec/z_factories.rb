@@ -23,7 +23,7 @@ Factory.define :municipality do |f|
 end
 
 Factory.define :environment_centre do |f|
-  f.sequence(:name) { |n| "Yleismaailmallinen ympäristökeskus nro #{n}" }
+  f.sequence(:name) { |n| "Yleismaailmallinen ymparistokeskus nro #{n}" }
   f.sequence(:id) { |n| "#{n}" }
 end
 

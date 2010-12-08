@@ -2,7 +2,6 @@ GEM
   remote: http://rubygems.org/
   specs:
     addressable (2.2.2)
-    builder (3.0.0)
     data_mapper (1.0.2)
       dm-aggregates (= 1.0.2)
       dm-constraints (= 1.0.2)
@@ -86,7 +85,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  builder
   data_mapper
   dm-migrations
   dm-oracle-adapter

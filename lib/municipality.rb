@@ -16,4 +16,9 @@ class Municipality
   def self.filter_by_code(code)
     all :code.like => "#{code.to_s.upcase}%"
   end
+
+  def self.shared_attributes
+    @@shared_attributes ||= [:id, :code, :name, :latitude, :longitude, :radius]
+  end
+
 end

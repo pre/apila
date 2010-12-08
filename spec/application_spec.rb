@@ -38,13 +38,15 @@ describe 'Application' do
 
   describe 'API XML responses' do
     specify 'should return ringer xml' do
-      ringer_id = 10000
-      ringer = Factory.build(:ringer, :id => ringer_id)
+      id = 10000
+      email = "testeri@yksityinen.osoite.example.com"
+      ringer = Factory.build(:ringer, :id => id, :email => email)
       Ringer.stub!(:first).and_return(ringer)
 
-      get "/ringers/#{ringer_id}.xml"
+      get "/ringers/#{id}.xml"
       last_response.should be_ok
-      last_response.body.should include("<ringer id=\"#{ringer_id}\">")
+      last_response.body.should include("<email>#{email}</email>")
+      last_response.body.should include("<name>#{ringer.name}</name>")
     end
 
     describe 'for municipalities' do
@@ -55,13 +57,13 @@ describe 'Application' do
 
         get "/municipalities/#{municipality_id}.xml"
         last_response.should be_ok
-        last_response.body.should include("<municipality id=\"#{municipality_id}\">")
-        last_response.body.should include("<environment_centre id=\"#{municipality.environment_centre.id}\">")
+        last_response.body.should include("<name>#{municipality.name}</name>")
+        last_response.body.should include("<name>#{municipality.environment_centre.name}")
       end
 
       specify 'should return a json array of all municipalities' do
         municipalities = []
-        10.times { municipalities << Factory.build(:municipality) }
+        10.times { |n| municipalities << Factory.build(:municipality) }
         Municipality.stub!(:all).and_return(municipalities)
 
         get "/municipalities.json"
@@ -73,13 +75,14 @@ describe 'Application' do
 
       specify 'should return an xml array of all municipalities' do
         municipalities = []
-        10.times { municipalities << Factory.build(:municipality) }
-        Municipality.stub!(:all).and_return(municipalities)
+        10.times { |n| municipalities << Factory.create(:municipality, :code => "Municipality no #{n}") }
+        ## FIXME: Sholuld stub, but don't know how to get DataMapper objects who have #to_xml (replace .create with .build)
+        # Municipality.stub!(:all).and_return(municipalities)
 
         get "/municipalities.xml"
         last_response.should be_ok
         municipalities.each do |municipality|
-          last_response.body.should include("<municipality id=\"#{municipality.id}\">")
+          last_response.body.should include("<code>#{municipality.code}</code>")
         end
       end
 

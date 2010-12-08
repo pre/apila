@@ -16,7 +16,12 @@ helpers do
 end
 
 not_found do
+  content_type :text
   "404 Not Found"
+end
+
+before do
+  content_type :xml
 end
 
 get '/' do
@@ -24,11 +29,23 @@ get '/' do
 end
 
 get '/ringers/:id.xml' do
-  build_xml_response(Ringer, :id => params[:id])
+  ringer = Ringer.first(:id => params[:id])
+
+  if ringer
+    ringer.to_xml(:methods => [:name], :only => Ringer.shared_attributes)
+  else
+    halt 404
+  end
 end
 
 get '/municipalities/:id.xml' do
-  build_xml_response(Municipality, :id => params[:id])
+  municipality = Municipality.first(:id => params[:id])
+
+  if municipality
+    municipality.to_xml(:methods => [:environment_centre], :only => Municipality.shared_attributes)
+  else
+    halt 404
+  end
 end
 
 get '/municipalities.:format' do
@@ -39,7 +56,7 @@ get '/municipalities.:format' do
     @municipalities.to_json(:methods => :environment_centre)
   when 'xml'
     content_type :xml
-    builder :municipalities
+    @municipalities.to_xml(:methods => [:environment_centre], :only => Municipality.shared_attributes)
   else
     not_found
   end
@@ -50,16 +67,3 @@ get '/species.json' do
   @species = Species.filter_by_code(params[:code])
   @species.to_json(:relationships => {:names => {}})
 end
-
-private
-
-  def build_xml_response(object_class, query = {})
-    instance_name = object_class.to_s.downcase
-    instance_variable_set("@#{instance_name}", object_class.first(query))
-
-    if instance_variable_get("@#{instance_name}")
-      builder instance_name.to_sym
-    else
-      halt 404
-    end
-  end

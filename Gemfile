@@ -2,12 +2,13 @@ source :rubygems
 
 gem "sinatra"
 gem "json"
+gem "nokogiri"
 
 gem "data_mapper"
 gem "dm-oracle-adapter"
 gem "dm-migrations"
 gem "dm-serializer"
-gem "builder"
+
 
 group :test do
   gem "rspec"
