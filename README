@@ -1,3 +1,7 @@
+Petrus Repo
+petrus.repo@iki.fi
+
+
 API for Legacy Attributes - APILA
 =================================
 
@@ -10,12 +14,12 @@ Configure app_config.rb (look at app_config.rb.example).
 Setup Oracle's environment variables for ruby-oci8 (see Lintuvaara's README)
 
 Install binary dependencies (at least)
- % apt-get install libxml2-dev libxslt-dev
+ % sudo apt-get install libxml2-dev libxslt-dev
 
 Install Rubygems (preferably from source)
 
 Install Gem dependencies
- % gem install rake bundler
+ % sudo gem install rake bundler
 
 Install Application gems
  % bundle install
@@ -31,7 +35,3 @@ To deploy with Passenger, add to virtual host's config
 And add a symlink
   ln -s APILA_ROOT/public LINTUVAARA_ROOT/public/apila
 
-
-
-Thanks to zapnap@github for a handy Sinatra Application Template!
-https://github.com/zapnap/sinatra-template
